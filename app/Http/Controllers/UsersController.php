@@ -27,6 +27,7 @@ class UsersController extends Controller
         
         // 関係するモデルの件数をロード
         $user->loadRelationshipCounts();
+        $user->favorites_count = $user->fetch_favorite_cnt_where_user_id();
         
         // ユーザーの投稿一覧を作成日時の降順で取得
         $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
@@ -58,6 +59,7 @@ class UsersController extends Controller
 
         // 関係するモデルの件数をロード
         $user->loadRelationshipCounts();
+        $user->favorites_count = $user->fetch_favorite_cnt_where_user_id();
 
         // ユーザーのフォロー一覧を取得
         $followings = $user->followings()->paginate(10);
@@ -82,6 +84,7 @@ class UsersController extends Controller
 
         // 関係するモデルの件数をロード
         $user->loadRelationshipCounts();
+        $user->favorites_count = $user->fetch_favorite_cnt_where_user_id();
 
         // ユーザーのフォロワー一覧を取得
         $followers = $user->followers()->paginate(10);
@@ -108,6 +111,7 @@ class UsersController extends Controller
 
         // 関係するモデルの件数をロード
         $user->loadRelationshipCounts();
+        $user->favorites_count = $user->fetch_favorite_cnt_where_user_id();
 
         // ユーザーのお気に入り投稿一覧を取得
         $favorites = $user->fetch_favorite_posts()->paginate(10);

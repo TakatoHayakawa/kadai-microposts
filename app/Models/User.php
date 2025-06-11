@@ -158,6 +158,14 @@ class User extends Authenticatable
             ->where('user_favorite.user_id',$this->id);
     }
 
+    public function fetch_favorite_cnt_where_user_id()
+    {
+        return $this->hasMany(Micropost::class)
+            ->join('user_favorite','microposts.id','user_favorite.favorite_id')
+            ->where('user_favorite.user_id', $this->id)
+            ->count();
+    }
+
     public function favorite(int $post_id)
     {
         $exist = $this->is_favoriteing($post_id);
