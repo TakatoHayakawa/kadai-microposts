@@ -153,6 +153,8 @@ class User extends Authenticatable
     //このユーザーがお気に入りにしているポストを取得
     public function fetch_favorite_posts()
     {
+        return $this->belongsToMany(Micropost::class, 'user_favorite', 'user_id', 'favorite_id')->withTimestamps();
+        
         return $this->hasMany(Micropost::class)
             ->join('user_favorite','microposts.id','user_favorite.favorite_id')
             ->where('user_favorite.user_id',$this->id);
@@ -160,6 +162,8 @@ class User extends Authenticatable
 
     public function fetch_favorite_cnt_where_user_id()
     {
+        return $this->favorites()->count();
+        
         return $this->hasMany(Micropost::class)
             ->join('user_favorite','microposts.id','user_favorite.favorite_id')
             ->where('user_favorite.user_id', $this->id)
@@ -202,6 +206,8 @@ class User extends Authenticatable
      */
     public function is_favoriteing(int $post_id)
     {
+        return $this->favorites()->where('favorite_id', $post_id)->exists();
+
         return $this->fetch_favorite_posts()->where('favorite_id','=', $post_id)->exists();
         
         return $this->belongsToMany(User::class, 'user_favorite', 'user_id', 'favorite_id')->where('user_favorite.favorite_id', $post_id)->exists();
